@@ -20,7 +20,13 @@ if (!$item) {
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        $stmt = $pdo->prepare("UPDATE items SET 
+        verifyCsrfToken();
+        $categories = ['electronics', 'documents', 'jewelry', 'clothing', 'other'];
+        $status = $_POST['status'] ?? '';
+        if (!in_array($_POST['category'] ?? '', $categories, true) || !in_array($status, ['lost', 'found'], true)) {
+            throw new InvalidArgumentException('Invalid item category or status.');
+        }
+        $stmt = $pdo->prepare("UPDATE items SET
             title = ?, 
             description = ?, 
             category = ?, 
@@ -43,23 +49,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['success'] = "Item updated successfully";
         header("Location: dashboard.php");
         exit();
+    } catch (InvalidArgumentException $e) {
+        $_SESSION['error'] = $e->getMessage();
     } catch(PDOException $e) {
-        $_SESSION['error'] = "Error updating item: " . $e->getMessage();
+        error_log('Item update failed: ' . $e->getMessage());
+        $_SESSION['error'] = 'Unable to update the item. Please try again.';
     }
 }
 
 include 'includes/header.php';
 ?>
 
-<div class="container py-5">
+<main class="form-page"><div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0"><i class="fas fa-edit me-2"></i>Edit Item</h4>
+            <div class="card form-card">
+                <div class="form-card-header">
+                    <p class="eyebrow">UPDATE REPORT</p><h1>Edit item details</h1><p>Keep your report accurate and helpful for the community.</p>
                 </div>
                 <div class="card-body">
                     <form method="POST">
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
                         <input type="hidden" name="id" value="<?= $item['id'] ?>">
                         
                         <div class="mb-3">
@@ -118,6 +128,6 @@ include 'includes/header.php';
             </div>
         </div>
     </div>
-</div>
+</div></main>
 
 <?php include 'includes/footer.php'; ?>

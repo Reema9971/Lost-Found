@@ -34,12 +34,13 @@ try {
 include 'includes/header.php';
 ?>
 
-<div class="container my-5">
-<div class="row">
+<main class="app-page"><div class="container py-5">
+<div class="row justify-content-center">
     <div class="col-md-8 offset-md-2">
-        <div class="card">
+        <article class="item-detail-card">
             <div class="card-body">
-                <h3 class="card-title"><?= htmlspecialchars($item['title']) ?></h3>
+                <span class="status-pill status-<?= $item['status'] === 'lost' ? 'lost' : 'found' ?>"><i class="fas fa-circle"></i><?= htmlspecialchars(ucfirst($item['status'])) ?></span>
+                <h1 class="card-title"><?= htmlspecialchars($item['title']) ?></h1>
                 <p class="card-text"><?= nl2br(htmlspecialchars($item['description'])) ?></p>
                 <p><strong>Category:</strong> <?= htmlspecialchars($item['category']) ?></p>
                 <p><strong>Location:</strong> <?= htmlspecialchars($item['location']) ?></p>
@@ -53,12 +54,12 @@ include 'includes/header.php';
                 <?php endif; ?>
 
                 <hr>
-                <h5>Reported By:</h5>
-                <p><strong>Username:</strong> <?= htmlspecialchars($item['username']) ?></p>
-                <p><strong>Email:</strong> <?= htmlspecialchars($item['email']) ?></p>
+                <div class="reporter-card"><i class="fas fa-user-circle"></i><div><small>REPORTED BY</small><strong><?= htmlspecialchars($item['username']) ?></strong><a href="mailto:<?= htmlspecialchars($item['email']) ?>"><?= htmlspecialchars($item['email']) ?></a></div></div>
 
                 <a href="index.php" class="btn btn-secondary mt-3">Back to Home</a>
             </div>
-        </div>
+        </article>
     </div>
 </div>
+</div></main>
+<?php include 'includes/footer.php'; ?>

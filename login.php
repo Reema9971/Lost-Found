@@ -9,6 +9,7 @@ if (isLoggedIn()) {
 
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    verifyCsrfToken();
     // Accept roll number for login
     $roll_no = trim($_POST['roll_no']);
     $password = trim($_POST['password']);
@@ -18,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $stmt->fetch();
 
     if ($user && password_verify($password, $user['password'])) {
+        session_regenerate_id(true);
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['username'] = $user['username'];
         $_SESSION['roll_no'] = $user['roll_no'];
@@ -30,16 +32,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <?php include 'includes/header.php'; ?>
-<div class="container mt-5">
+<main class="auth-page"><div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">Login</div>
+        <div class="col-md-8 col-lg-5">
+            <div class="auth-card">
+                <div class="auth-card-header"><div class="auth-icon"><i class="fas fa-arrow-right-to-bracket"></i></div><p class="eyebrow">WELCOME BACK</p><h1>Sign in to continue</h1><p>Access your item reports and messages.</p></div>
                 <div class="card-body">
                     <?php if ($error): ?>
                         <div class="alert alert-danger"><?= $error ?></div>
                     <?php endif; ?>
                     <form method="post">
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
                         <div class="mb-3">
                             <label>Roll Number</label>
                             <input type="text" name="roll_no" class="form-control" required>
@@ -48,12 +51,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <label>Password</label>
                             <input type="password" name="password" class="form-control" required>
                         </div>
-                        <button type="submit" class="btn btn-primary">Login</button>
-                        <p class="mt-3">Don't have an account? <a href="register.php">Register here</a></p>
+                        <button type="submit" class="btn btn-primary w-100 py-2">Sign in <i class="fas fa-arrow-right ms-2"></i></button>
+                        <p class="auth-switch">New here? <a href="register.php">Create an account</a></p>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</div></main>
 <?php include 'includes/footer.php'; ?>

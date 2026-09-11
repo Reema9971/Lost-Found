@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lost & Found Portal</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/LostFound/style.css">
+    <link rel="stylesheet" href="/Lost-Found/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,9 +43,12 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="logout.php">
-                                    <i class="fas fa-sign-out-alt nav-icon"></i>Logout
-                                </a>
+                                <form method="POST" action="logout.php" class="d-inline">
+                                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
+                                    <button type="submit" class="nav-link border-0 bg-transparent">
+                                        <i class="fas fa-sign-out-alt nav-icon"></i>Logout
+                                    </button>
+                                </form>
                             </li>
                         <?php else: ?>
                             <li class="nav-item">
@@ -78,4 +81,3 @@
     });
     </script>
 
-   

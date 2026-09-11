@@ -2,7 +2,8 @@
 require_once 'includes/config.php';
 require_once 'includes/auth.php';
 
-if (isLoggedIn()) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isLoggedIn()) {
+    verifyCsrfToken();
     // Unset all session variables
     $_SESSION = array();
     

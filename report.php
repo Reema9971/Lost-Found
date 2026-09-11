@@ -6,16 +6,16 @@ redirectIfNotLoggedIn();
 
 <?php include 'includes/header.php'; ?>
 
-<div class="container py-5">
+<main class="form-page"><div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <div class="card report-form">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Report Lost/Found Item</h4>
+            <div class="card report-form form-card">
+                <div class="form-card-header">
+                    <p class="eyebrow">CREATE A REPORT</p><h1>Tell the community about the item</h1><p>Clear details make it easier for someone to recognise it.</p>
                 </div>
                 <div class="card-body">
                     <form method="POST" action="process-report.php" enctype="multipart/form-data">
-                    <form method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label">Item Title</label>
@@ -75,7 +75,7 @@ redirectIfNotLoggedIn();
 
                             <div class="mb-3">
                                  <label for="image" class="form-label">Upload Image</label>
-                                 <input class="form-control" type="file" name="image" id="image">
+                                 <input class="form-control" type="file" name="image" id="image" accept="image/jpeg,image/png,image/gif,image/webp">
                             </div>
 
                             <div class="col-12">
@@ -89,6 +89,6 @@ redirectIfNotLoggedIn();
             </div>
         </div>
     </div>
-</div>
+</div></main>
 
 <?php include 'includes/footer.php'; ?>

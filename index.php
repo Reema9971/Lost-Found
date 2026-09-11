@@ -50,9 +50,9 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="card rounded-4 border-0 shadow-sm h-100 item-card pinterest-card">
                     <?php if ($item['image']): ?>
                         <div class="card-img-container">
-                            <img src="<?= $item['image'] ?>" class="card-img-top rounded-top-4" alt="<?= htmlspecialchars($item['title']) ?>">
+                            <img src="<?= htmlspecialchars($item['image'], ENT_QUOTES, 'UTF-8') ?>" class="card-img-top rounded-top-4" alt="<?= htmlspecialchars($item['title'], ENT_QUOTES, 'UTF-8') ?>">
                             <span class="badge position-absolute top-0 end-0 m-3 rounded-pill bg-<?= $item['status'] === 'lost' ? 'danger' : 'success' ?> shadow-sm px-3 py-2 fs-6">
-                                <?= ucfirst($item['status']) ?>
+                                <?= htmlspecialchars(ucfirst($item['status']), ENT_QUOTES, 'UTF-8') ?>
                             </span>
                             <div class="hover-overlay d-flex justify-content-center align-items-center">
                                 <a href="item-details.php?id=<?= $item['id'] ?>" class="btn btn-light rounded-circle">
@@ -64,7 +64,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <div class="card-img-placeholder d-flex justify-content-center align-items-center rounded-top-4 text-muted">
                             <i class="fas fa-image fa-3x"></i>
                             <span class="badge position-absolute top-0 end-0 m-3 rounded-pill bg-<?= $item['status'] === 'lost' ? 'danger' : 'success' ?> shadow-sm px-3 py-2 fs-6">
-                                <?= ucfirst($item['status']) ?>
+                                <?= htmlspecialchars(ucfirst($item['status']), ENT_QUOTES, 'UTF-8') ?>
                             </span>
                         </div>
                     <?php endif; ?>
@@ -105,9 +105,9 @@ document.addEventListener('DOMContentLoaded', function() {
         percentPosition: true
     });
     
-    // Re-layout masonry after images are loaded
-    imagesLoaded(elem).on('progress', function() {
-        masonry.layout();
+    // Re-layout masonry after each image loads without requiring another library.
+    elem.querySelectorAll('img').forEach(function(image) {
+        image.addEventListener('load', function() { masonry.layout(); });
     });
 });
 </script>
